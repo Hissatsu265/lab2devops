@@ -10,7 +10,7 @@ pipeline {
         }
         stage('SonarQube Analysis') {
             environment {
-                scannerHome = tool 'SonarQube Scanner' // Tên cấu hình SonarQube Scanner trong Jenkins
+                scannerHome = tool 'g16lab2' // Tên cấu hình SonarQube Scanner trong Jenkins
             }
             steps {
                 withSonarQubeEnv('g16lab2') { // Tên server đã cấu hình trong Jenkins
