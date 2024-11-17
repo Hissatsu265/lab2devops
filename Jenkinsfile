@@ -8,7 +8,22 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/Hissatsu265/lab2devops.git'
             }
         }
-
+        stage('SonarQube Analysis') {
+            environment {
+                scannerHome = tool 'SonarQube Scanner' // Tên cấu hình SonarQube Scanner trong Jenkins
+            }
+            steps {
+                withSonarQubeEnv('g16lab2') { // Tên server đã cấu hình trong Jenkins
+                    sh """
+                        ${scannerHome}/bin/sonar-scanner \
+                        -Dsonar.projectKey=lab2devops \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=http://localhost:9000 \
+                        -Dsonar.login=Squ_eb1161f75de481edae29a62928e2cc920bb06b06
+                    """
+                }
+            }
+        }
         stage('Build and Deploy service1') {
             steps {
                 dir('service1') {
