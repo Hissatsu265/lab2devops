@@ -5,7 +5,7 @@ pipeline {
         stage('Checkout Code') {
             steps {
                 // Lấy mã nguồn từ repository
-                git branch: 'main', url: 'https://github.com/your-repo/backend'
+                git branch: 'main', url: 'https://github.com/Hissatsu265/lab2devops.git'
             }
         }
 
