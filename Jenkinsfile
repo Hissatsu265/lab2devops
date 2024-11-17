@@ -9,32 +9,32 @@ pipeline {
             }
         }
 
-        stage('Build and Deploy services1') {
+        stage('Build and Deploy service1') {
             steps {
-                dir('services1') {
-                    // Build Docker image cho services1
-                    sh 'docker build -t services1-backend .'
+                dir('service1') {
+                    // Build Docker image cho service1
+                    sh 'docker build -t service1-backend .'
 
                     // Dừng và xoá container cũ (nếu tồn tại)
-                    sh 'docker stop services1-container || true && docker rm services1-container || true'
+                    sh 'docker stop service1-container || true && docker rm service1-container || true'
 
-                    // Chạy container mới cho services1
-                    sh 'docker run -d -p 5000:5000 --name services1-container services1-backend'
+                    // Chạy container mới cho service1
+                    sh 'docker run -d -p 5000:5000 --name service1-container service1-backend'
                 }
             }
         }
 
-        stage('Build and Deploy services2') {
+        stage('Build and Deploy service2') {
             steps {
-                dir('services2') {
-                    // Build Docker image cho services2
-                    sh 'docker build -t services2-backend .'
+                dir('service2') {
+                    // Build Docker image cho service2
+                    sh 'docker build -t service2-backend .'
 
                     // Dừng và xoá container cũ (nếu tồn tại)
-                    sh 'docker stop services2-container || true && docker rm services2-container || true'
+                    sh 'docker stop service2-container || true && docker rm service2-container || true'
 
-                    // Chạy container mới cho services2
-                    sh 'docker run -d -p 5001:5001 --name services2-container services2-backend'
+                    // Chạy container mới cho service2
+                    sh 'docker run -d -p 5001:5001 --name service2-container service2-backend'
                 }
             }
         }
