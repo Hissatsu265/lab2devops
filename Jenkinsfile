@@ -8,6 +8,7 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/Hissatsu265/lab2devops.git'
             }
         }
+
         stage('SonarQube Analysis') {
             environment {
                 scannerHome = tool 'g16lab2' // Tên cấu hình SonarQube Scanner trong Jenkins
@@ -24,35 +25,43 @@ pipeline {
                 }
             }
         }
-        stage('Build and Deploy service1') {
+
+        stage('Build Docker Images') {
             steps {
                 dir('service1') {
-                    // Build Docker image cho service1
                     sh 'docker build -t service1-backend .'
-
-                    // Dừng và xoá container cũ (nếu tồn tại)
-                    sh 'docker stop service1-container || true && docker rm service1-container || true'
-
-                    // Chạy container mới cho service1
-                    sh 'docker run -d -p 5000:5000 --name service1-container service1-backend'
+                }
+                dir('service2') {
+                    sh 'docker build -t service2-backend .'
                 }
             }
         }
 
-        stage('Build and Deploy service2') {
+        stage('Scan Docker Images with Trivy') {
             steps {
+                script {
+                    // Quét service1
+                    sh 'trivy image --severity CRITICAL,HIGH service1-backend || exit 1'
+
+                    // Quét service2
+                    sh 'trivy image --severity CRITICAL,HIGH service2-backend || exit 1'
+                }
+            }
+        }
+
+        stage('Deploy Services') {
+            steps {
+                dir('service1') {
+                    sh 'docker stop service1-container || true && docker rm service1-container || true'
+                    sh 'docker run -d -p 5000:5000 --name service1-container service1-backend'
+                }
                 dir('service2') {
-                    // Build Docker image cho service2
-                    sh 'docker build -t service2-backend .'
-
-                    // Dừng và xoá container cũ (nếu tồn tại)
                     sh 'docker stop service2-container || true && docker rm service2-container || true'
-
-                    // Chạy container mới cho service2
                     sh 'docker run -d -p 5001:5001 --name service2-container service2-backend'
                 }
             }
         }
+
         stage('Test Services') {
             steps {
                 script {
