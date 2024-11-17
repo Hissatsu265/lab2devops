@@ -38,5 +38,32 @@ pipeline {
                 }
             }
         }
+        stage('Test Services') {
+            steps {
+                script {
+                    // Kiểm tra service1
+                    def service1Response = sh(
+                        script: "curl -s -o /dev/null -w '%{http_code}' http://localhost:5000/",
+                        returnStdout: true
+                    ).trim()
+
+                    if (service1Response != '200') {
+                        error "Service1 API test failed! Expected HTTP 200 but got ${service1Response}"
+                    }
+
+                    // Kiểm tra service2
+                    def service2Response = sh(
+                        script: "curl -s -o /dev/null -w '%{http_code}' http://localhost:5001/",
+                        returnStdout: true
+                    ).trim()
+
+                    if (service2Response != '200') {
+                        error "Service2 API test failed! Expected HTTP 200 but got ${service2Response}"
+                    }
+
+                    echo 'All API tests passed!'
+                }
+            }
+        }
     }
 }
