@@ -19,7 +19,7 @@ pipeline {
                         -Dsonar.projectKey=lab2devops \
                         -Dsonar.sources=. \
                         -Dsonar.host.url=http://localhost:9000 \
-                        -Dsonar.login=Squ_eb1161f75de481edae29a62928e2cc920bb06b06
+                        -Dsonar.login=squ_f1f110be562f2e8ca88ceef074a97125e1bd272a
                     """
                 }
             }
