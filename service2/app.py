@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)
 @app.route('/', methods=['GET'])
 def home():
-    return jsonify({"message": "Welcome to the translate en-vi API!"}), 200
+    return jsonify({"message": "Welcome to the translate from en to vi API!"}), 200
 
 def translate_to_vietnamese(text):
     # Dịch văn bản sang tiếng Anh
