@@ -1,9 +1,9 @@
 pipeline {
     agent any
-    triggers {
-        // Trigger cho GitHub
-        githubPush()  // Trigger tự động khi có thay đổi trên GitHub
-    }
+    // triggers {
+    //     // Trigger cho GitHub
+    //     githubPush()  // Trigger tự động khi có thay đổi trên GitHub
+    // }
     stages {
         stage('Checkout Code') {
             steps {
