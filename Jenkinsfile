@@ -54,14 +54,10 @@ pipeline {
 
         stage('Deploy Services') {
             steps {
-                dir('service1') {
-                    sh 'docker stop service1-container || true && docker rm service1-container || true'
-                    sh 'docker run -d -p 5000:5000 --name service1-container service1-backend'
-                }
-                dir('service2') {
-                    sh 'docker stop service2-container || true && docker rm service2-container || true'
-                    sh 'docker run -d -p 5001:5001 --name service2-container service2-backend'
-                }
+                sh '''
+                    docker-compose down || true
+                    docker-compose up -d
+                '''
             }
         }
 
